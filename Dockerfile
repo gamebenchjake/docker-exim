@@ -1,10 +1,12 @@
-FROM debian:stretch
+FROM debian:stretch-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-		apt-get install -y exim4-daemon-light && \
-		apt-get clean
+	apt-get install -y exim4-daemon-light --no-install-recommends && \
+	apt-get clean autoclean && \
+	apt-get autoremove -y && \
+	rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log
 
 RUN echo "dc_eximconfig_configtype='{config_type}'" > /etc/exim4/update-exim4.conf.conf && \
 		echo "dc_other_hostnames=''" >> /etc/exim4/update-exim4.conf.conf && \
